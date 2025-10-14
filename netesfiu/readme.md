@@ -2,8 +2,6 @@
 
 Ez a workflow az email-lekérést, az adatok feldolgozását és a Homeassistant szenzorok frissítését egyben kezeli. Ez a Workflow szinkronizálva van az [n8n-oldalán elérhető template-el](https://n8n.io/workflows/9010)
 
->ha a link 404-es hibát ad akkor a template még feldolgozás alatt van
-
 ## Követelmények
 
 * n8n (felhős vagy self-hosted)
