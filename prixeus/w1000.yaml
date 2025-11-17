@@ -1,0 +1,13 @@
+imap:
+  host: imap.gmail.com
+  port: 993
+  user: user@gmail.com
+  pass: secret
+
+homeassistant:
+  url: https://homeassistant:8123
+  token: secret
+
+poll_interval: 600
+update_input_numbers: true
+log_level: INFO
