@@ -1,0 +1,1 @@
+docker run --rm -v $PWD/ca-chain.cert.pem:/ca-chain-cert.pem:ro -e SSL_CERT_FILE=/ca-chain-cert.pem -e TZ=Europe/Budapest -v $PWD/w1000.yaml:/w1000.yaml:ro w1000-go
