@@ -1,0 +1,2356 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "binaryPropertyName": "attachment_0",
+        "options": {}
+      },
+      "id": "f4a5f90a-42eb-4e9f-af4a-39bfdfaaed39",
+      "name": "Extract from File",
+      "type": "n8n-nodes-base.extractFromFile",
+      "position": [
+        2592,
+        1280
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "keys": {
+          "key": [
+            {
+              "currentKey": "Időbélyeg",
+              "newKey": "start"
+            },
+            {
+              "currentKey": "Érték_1",
+              "newKey": "AM"
+            }
+          ]
+        },
+        "additionalOptions": {}
+      },
+      "id": "7391f7e6-0bd0-45fe-bc79-4a32bce63bc1",
+      "name": "Rename \"*_1\" keys for merge",
+      "type": "n8n-nodes-base.renameKeys",
+      "position": [
+        3104,
+        1184
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.id }}",
+        "simple": false,
+        "options": {
+          "downloadAttachments": true
+        }
+      },
+      "id": "fb116b39-c3e5-4ae1-a9a9-697e2719e0b5",
+      "name": "Get a message[0]",
+      "type": "n8n-nodes-base.gmail",
+      "position": [
+        2144,
+        1328
+      ],
+      "webhookId": "bf73413a-ac13-4152-92b3-e973312b647b",
+      "typeVersion": 2.1,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ctBdwDxIkxFWYxhN",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "keys": {
+          "key": [
+            {
+              "currentKey": "Időbélyeg",
+              "newKey": "start"
+            },
+            {
+              "currentKey": "Érték_2",
+              "newKey": "1_8_0"
+            }
+          ]
+        },
+        "additionalOptions": {}
+      },
+      "id": "2578c4a8-e4ee-4bb6-8805-a6c3d4e9c32c",
+      "name": "Rename \"*_1\" keys for merge1",
+      "type": "n8n-nodes-base.renameKeys",
+      "position": [
+        3104,
+        1376
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "keys": {
+          "key": [
+            {
+              "currentKey": "Időbélyeg",
+              "newKey": "start"
+            },
+            {
+              "currentKey": "Érték_3",
+              "newKey": "2_8_0"
+            }
+          ]
+        },
+        "additionalOptions": {}
+      },
+      "id": "4a200ca7-90a9-4f61-ac01-a3e9ee0f7891",
+      "name": "Rename \"*_1\" keys for merge2",
+      "type": "n8n-nodes-base.renameKeys",
+      "position": [
+        3104,
+        1664
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "Időbélyeg,Érték",
+        "options": {}
+      },
+      "id": "82f1712c-fd55-45a3-bdc9-583008b71091",
+      "name": "Extract default data from source (+A)",
+      "type": "n8n-nodes-base.splitOut",
+      "position": [
+        2880,
+        992
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "Időbélyeg,Érték_1",
+        "options": {}
+      },
+      "id": "1742f021-21ea-486f-a322-8eaa3875c096",
+      "name": "Extract '*_1' data from source (-A)",
+      "type": "n8n-nodes-base.splitOut",
+      "position": [
+        2880,
+        1184
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "Időbélyeg,Érték_2",
+        "options": {}
+      },
+      "id": "34e05b58-1bb8-4a6b-be2a-cecad0c1e5c8",
+      "name": "Extract '*_2' data from source (1_8_0)",
+      "type": "n8n-nodes-base.splitOut",
+      "position": [
+        2880,
+        1376
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "Időbélyeg,Érték_3",
+        "options": {}
+      },
+      "id": "dd3d1a4d-c603-49a9-8559-98168d3f564d",
+      "name": "Extract '*_3' data from source (2_8_0)",
+      "type": "n8n-nodes-base.splitOut",
+      "position": [
+        2880,
+        1664
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "['start']",
+        "joinMode": "keepEverything",
+        "options": {}
+      },
+      "id": "11c95e50-ff6b-4a59-8754-ba257e40931c",
+      "name": "Merge (+A; -A)",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        3328,
+        1088
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "keys": {
+          "key": [
+            {
+              "currentKey": "Időbélyeg",
+              "newKey": "start"
+            },
+            {
+              "currentKey": "Érték",
+              "newKey": "AP"
+            }
+          ]
+        },
+        "additionalOptions": {}
+      },
+      "id": "037f9a35-5399-40f9-9f7c-6f35ed38fee9",
+      "name": "Rename \"*_1\" keys for merge3",
+      "type": "n8n-nodes-base.renameKeys",
+      "position": [
+        3104,
+        992
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "['start']",
+        "joinMode": "keepEverything",
+        "options": {}
+      },
+      "id": "49b074a6-dcec-4b68-ac89-80219b096188",
+      "name": "Merge (+A; -A)1",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        3328,
+        1472
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "['start']",
+        "joinMode": "keepEverything",
+        "options": {}
+      },
+      "id": "3b7a6d27-3b21-4d2c-8172-ed77588839a5",
+      "name": "Merge (+A; -A)2",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        3552,
+        1184
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "resource": "service",
+        "operation": "call",
+        "domain": "recorder",
+        "service": "import_statistics",
+        "serviceAttributes": {
+          "attributes": [
+            {
+              "name": "statistic_id",
+              "value": "sensor.grid_energy_import"
+            },
+            {
+              "name": "source",
+              "value": "recorder"
+            },
+            {
+              "name": "unit_of_measurement",
+              "value": "kWh"
+            },
+            {
+              "name": "has_mean",
+              "value": "={{false}}"
+            },
+            {
+              "name": "has_sum",
+              "value": "={{ true }}"
+            },
+            {
+              "name": "stats",
+              "value": "={{ $json.data }}"
+            }
+          ]
+        }
+      },
+      "id": "01904335-d9ad-486f-9982-bb76e307d93c",
+      "name": "Spook: update +A hitorical data1",
+      "type": "n8n-nodes-base.homeAssistant",
+      "position": [
+        5184,
+        1088
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "homeAssistantApi": {
+          "id": "5Q1lnmAQrn337KpP",
+          "name": "Home Assistant account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "service",
+        "operation": "call",
+        "domain": "recorder",
+        "service": "import_statistics",
+        "serviceAttributes": {
+          "attributes": [
+            {
+              "name": "statistic_id",
+              "value": "sensor.grid_energy_export"
+            },
+            {
+              "name": "source",
+              "value": "recorder"
+            },
+            {
+              "name": "unit_of_measurement",
+              "value": "kWh"
+            },
+            {
+              "name": "has_mean",
+              "value": "={{false}}"
+            },
+            {
+              "name": "has_sum",
+              "value": "={{ true }}"
+            },
+            {
+              "name": "stats",
+              "value": "={{ $json.data }}"
+            }
+          ]
+        }
+      },
+      "id": "f714dcb0-2afa-42d0-856a-e1a3a73d8b4f",
+      "name": "Spook: update -A hitorical data1",
+      "type": "n8n-nodes-base.homeAssistant",
+      "position": [
+        5184,
+        1280
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "homeAssistantApi": {
+          "id": "5Q1lnmAQrn337KpP",
+          "name": "Home Assistant account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"start\": {{new Date($json.start)}},\n  \"state\": {{ $json['1_8_0'] }},\n  \"sum\": {{ $json['1_8_0'] }}\n}",
+        "options": {}
+      },
+      "id": "556dbd0e-aabb-4f02-9ff4-f5967fa47e91",
+      "name": "Generate 1_8_0 list for stats",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        4736,
+        1088
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"start\": {{new Date($json.start)}},\n  \"state\": {{ $json['2_8_0'] }},\n  \"sum\": {{ $json['2_8_0'] }}\n}",
+        "options": {}
+      },
+      "id": "8ead8de4-6c72-4692-afc6-2043bfb906d6",
+      "name": "Generate 2_8_0 list for stats",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        4736,
+        1280
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "include": "specifiedFields",
+        "fieldsToInclude": "start,state, sum",
+        "options": {}
+      },
+      "id": "dfe94240-c0dd-4746-8b8e-ea9cafa36dc0",
+      "name": "Generate 1_8_0 stats",
+      "type": "n8n-nodes-base.aggregate",
+      "position": [
+        4960,
+        1088
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "include": "specifiedFields",
+        "fieldsToInclude": "start,state, sum",
+        "options": {}
+      },
+      "id": "93aefd08-37cf-4638-b0ee-2abfaac714c6",
+      "name": "Generate 2_8_0 stats",
+      "type": "n8n-nodes-base.aggregate",
+      "position": [
+        4960,
+        1280
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "resource": "state",
+        "operation": "upsert",
+        "entityId": "input_number.grid_export_meter",
+        "state": "={{ $('Generate 2_8_0 stats').item.json.data.at(-1).state }}"
+      },
+      "id": "5c15d9fb-f27d-4878-af3d-3a14744ae8eb",
+      "name": "Update input_number.exportt entity state1",
+      "type": "n8n-nodes-base.homeAssistant",
+      "position": [
+        5600,
+        1280
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "homeAssistantApi": {
+          "id": "5Q1lnmAQrn337KpP",
+          "name": "Home Assistant account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "state",
+        "operation": "upsert",
+        "entityId": "input_number.grid_import_meter",
+        "state": "={{ $('Generate 1_8_0 stats').item.json.data.at(-1).state }}"
+      },
+      "id": "4d8917f1-93e1-4f43-90d7-7d6d409c5923",
+      "name": "Update input_number.import entity state1",
+      "type": "n8n-nodes-base.homeAssistant",
+      "position": [
+        5600,
+        1088
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "homeAssistantApi": {
+          "id": "5Q1lnmAQrn337KpP",
+          "name": "Home Assistant account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {
+          "labelIds": [],
+          "sender": "noreply@eon.com"
+        }
+      },
+      "id": "0176f0fb-e172-4aec-8bef-b1f55b4a3a1e",
+      "name": "Gmail Trigger",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "position": [
+        480,
+        1840
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ctBdwDxIkxFWYxhN",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 14
+            }
+          ]
+        }
+      },
+      "id": "994deea4-5fb2-4c00-9448-962be35eaf60",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [
+        480,
+        1600
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "3b78aa20-1a72-4d43-9428-d754e9a51c55",
+              "operator": {
+                "name": "filter.operator.equals",
+                "type": "string",
+                "operation": "equals"
+              },
+              "leftValue": "={{ $json.subject }}",
+              "rightValue": "[EON-W1000]"
+            },
+            {
+              "id": "a046b65a-72b7-4eff-b97a-ad09acc1e753",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "leftValue": "={{$binary.attachment_0 ? true : false}}",
+              "rightValue": ""
+            },
+            {
+              "id": "4cfbc149-f429-4a68-a908-95e7db6906c6",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "leftValue": "={{ [\"xls\", \"xlsx\"].includes($binary.attachment_0.fileExtension.toLowerCase()) }}",
+              "rightValue": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ca18701e-a8b9-455e-8201-d1f8b492fee5",
+      "name": "If attachment_0 is xlsx",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        2368,
+        1328
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {},
+      "id": "ef31460a-85bb-44b6-8c44-af796c44d17e",
+      "name": "No Operation, do nothing1",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        2496,
+        1568
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "# Tárgy és csatolmány ellenőrzése\n- A Gmail payload a `Subject` mezőt használja (nagy S), az IMAP node a `subject` mezőt (kis s).\n- Ez a sablon mindkettőt kezeli: az első **If** ellenőrzi a `$json.Subject`-et (Gmail), a második a `$json.subject`-et (IMAP).\n- Csatolmány ellenőrzés:\n  - Biztosítja, hogy az `attachment_0` létezik\n  - Biztosítja, hogy a kiterjesztés `xls` vagy `xlsx`\n\n## Előfeltételek\n- Állítsd be a hitelesítést a Gmail és/vagy IMAP node-hoz (ha nem használod az IMAP-ot, törölheted)\n- Ellenőrizd a node-okban a helyes `subject`-et és `sender`-t\n\n\n## Csak az a trigger node legyen bekötve, amit használsz is egyébként nem indul el a workflow",
+        "height": 1136,
+        "width": 1968
+      },
+      "id": "fc21908e-3f5d-4e5a-a707-55a7a1a01800",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        384,
+        928
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "# Oszlop-hozzárendelés\nAz E.ON export újrahasználja az oszlopneveket; az n8n `_1`, `_2`, `_3` utótagokat ad hozzá.  \nNormalizálás:\n\n- Alap (+A): `Időbélyeg` → `start`, `Érték` → `AP`\n- *_1 (-A): `Időbélyeg` → `start`, `Érték_1` → `AM`\n- *_2 (1_8_0): `Időbélyeg` → `start`, `Érték_2` → `1_8_0`\n- *_3 (2_8_0): `Időbélyeg` → `start`, `Érték_3` → `2_8_0`\n\nHárom **Merge** node egyesít `start` alapján.\n",
+        "height": 1040,
+        "width": 1280
+      },
+      "id": "4132b97f-5fa3-4424-b359-b570bdb4ccc4",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2384,
+        784
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "downloadAttachments": true,
+        "options": {
+          "customEmailConfig": "=[\"UNSEEN\",[\"OR\",[\"FROM\",\"noreply@eon.com\"],[\"SUBJECT\",\"[EON-W1000]\"]]]"
+        }
+      },
+      "id": "4c2254ee-3c22-41ca-b17e-d0eae1dec81d",
+      "name": "Email Trigger (IMAP)",
+      "type": "n8n-nodes-base.emailReadImap",
+      "position": [
+        1056,
+        1648
+      ],
+      "typeVersion": 2.1
+    },
+    {
+      "parameters": {
+        "content": "# E.ON W1000 → n8n → Home Assistant (Spook) — Áttekintés\n\n**Cél:** Az E.ON W1000 e-mail export (.xlsx) feldolgozása, a 15 perces +A/-A adatok órás összegzése, a 1.8.0 / 2.8.0 mérőállások rekonstruálása, és a hosszú távú statisztikák feltöltése a Home Assistantba a `recorder.import_statistics` segítségével. Továbbá az `input_number.grid_import_meter` / `input_number.grid_export_meter` frissítése az utolsó értékekkel.\n\n**Folyamat röviden**  \n1) Triggerek:  \n   - **Gmail Trigger** *vagy* **Email Trigger (IMAP)** → tárgynak `[EON-W1000]`-nek kell lennie (vagy amit az [E.ON e-portálon](https://e-portal.eon-hungaria.com/w1000) beállítottál)  \n   - **Schedule Trigger** opcionális napi lekérdezés → futtatja a **Get last 5 messages** node-ot.  \n2) Ellenőrzés:  \n   - **If** ellenőrzi a tárgyat; **If attachment_0 is xlsx** biztosítja, hogy `.xls`/`.xlsx` fájl.  \n3) Feldolgozás:  \n   - **Extract from File (xlsx)** → 4 × **Split Out** → 4 × **Rename keys** → **Merge**×3 → egységes sorok `{ start, AP, AM, 1_8_0?, 2_8_0? }`.  \n   - **Convert Excel time** → dátum átalakítás → **Convert datetime to Spook format** (`yyyy-MM-dd HH:00:00ZZ`).  \n   - **Code** node „Calculate hourly sum and” → órás összegzés; mérőállások előretöltése.  \n4) Statisztikák:  \n   - **Generate 1_8_0 list for stats** és **Generate 2_8_0 list for stats** → `{start, state, sum}` listák.  \n   - **Aggregate** → `data` tömb → **Home Assistant: recorder.import_statistics** (2 hívás).  \n   - Végül frissíti az `input_number.*_meter` segédértékeket az utolsó állapottal.\n",
+        "height": 752,
+        "width": 688,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        736,
+        -304
+      ],
+      "typeVersion": 1,
+      "id": "83c6914f-36fb-479c-9a99-711105bf7bf9",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "# Hitelesítési adatok\n- **Gmail OAuth2** *vagy* IMAP hitelesítés (csak olvasás)\n- **Home Assistant API** (Hosszú élettartamú hozzáférési token)\n- Opcionális: entitásnevek módosítása, ha eltérnek a HA-ban\n\n> Tipp: Gmailnél csak olvasási jogot adj. A titkokat mindig az n8n Credentials-ben tárold, ne a node paramétereiben.\n",
+        "height": 224,
+        "width": 688,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        736,
+        464
+      ],
+      "typeVersion": 1,
+      "id": "bdb5ca19-cf30-401c-a601-3e078b6bce5c",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Schedule trigger",
+        "height": 208,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        400,
+        1552
+      ],
+      "typeVersion": 1,
+      "id": "03a8e579-ee85-49a5-ab6f-68db586a4a3d",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Gmail trigger",
+        "height": 208,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        400,
+        1792
+      ],
+      "typeVersion": 1,
+      "id": "5a4eece4-6510-4a06-bb51-87ea9b6a6a73",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## IMAP trigger",
+        "height": 208,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        992,
+        1584
+      ],
+      "typeVersion": 1,
+      "id": "0be3ac88-aa6e-4559-afee-31b409025950",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "3b78aa20-1a72-4d43-9428-d754e9a51c55",
+              "operator": {
+                "name": "filter.operator.equals",
+                "type": "string",
+                "operation": "equals"
+              },
+              "leftValue": "={{ $json.Subject }}",
+              "rightValue": "[EON-W1000]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5055cad8-d101-4612-ad94-ea22e34e292c",
+      "name": "Check Email Subject",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        1280,
+        1408
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "content": "# Időkezelés\n- Az E.ON Excel idő sorozatszámként van kódolva; a **Convert Excel time** node a `1899-12-30` dátumhoz adja hozzá.  \n- A **Convert datetime to Spook format** node a legközelebbi egész órára kerekít és ISO formátumra alakít időzónával.  \n- Ha a HA más időzónában fut, mint az n8n, itt igazítsd.\n",
+        "height": 368,
+        "width": 448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3664,
+        976
+      ],
+      "typeVersion": 1,
+      "id": "7763ac7a-a02e-4ea4-baaa-1d99864f2a10",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json['start'] }}",
+        "format": "custom",
+        "customFormat": "yyyy-MM-dd HH:00:00ZZ",
+        "outputFieldName": "start",
+        "options": {
+          "includeInputFields": true
+        }
+      },
+      "id": "96dedf7a-91d8-4dbd-aebe-0ea36b548e99",
+      "name": "Convert datetime to Spook format",
+      "type": "n8n-nodes-base.dateTime",
+      "position": [
+        4000,
+        1184
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "operation": "addToDate",
+        "magnitude": "1899-12-30",
+        "timeUnit": "=days",
+        "duration": "={{ $json['start'] + 0.00000001}}",
+        "outputFieldName": "start",
+        "options": {
+          "includeInputFields": true
+        }
+      },
+      "id": "99763132-8a37-4a07-a11f-7154322ac3fb",
+      "name": "Convert Excel time",
+      "type": "n8n-nodes-base.dateTime",
+      "position": [
+        3776,
+        1184
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "content": "# Óránkénti összegzés logikája (Code node)\nBemenet: `{ start, AP, AM, 1_8_0?, 2_8_0? }` órás időbélyegekkel  \n- Összegzi a 15 perces AP/AM értékeket órás szintre  \n- Ha új `1_8_0` vagy `2_8_0` érték érkezik, új bázist állít  \n- Ha az elején nincs bázis, 0-val indul (szerkeszthető, ha inkább kihagynád az első órát)\n\nKimenet példa:\n```json\n{\nstart: \"2025-09-01 10:00:00+02:00\",\nAP: \"0.975\",\nAM: \"0.000\",\n\"1_8_0\": \"32749.288\",\n\"2_8_0\": \"39627.868\"\n}\n```",
+        "height": 640,
+        "width": 448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4128,
+        800
+      ],
+      "typeVersion": 1,
+      "id": "77cc7ffc-7ca7-4dfc-8e76-0e8d0bf5481d",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "# recorder.import_statistics payload\nA mérők adatai `{ start, state, sum }` formában kerülnek átadásra:  \n- **start**: JS Date objektum  \n- **state**: aktuális mérőállás (kWh)  \n- **sum**: ugyanaz, mint a state (total_increasing típushoz)\n\nSzolgáltatás: `recorder.import_statistics` → hosszú távú statisztikák frissítése.  \nHivatkozás: Home Assistant Recorder dokumentáció.\n",
+        "height": 608,
+        "width": 816
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4592,
+        832
+      ],
+      "typeVersion": 1,
+      "id": "58a1796f-1f71-43d4-9052-d881cbdf0082",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "# Frissített entitás ID-k\n- `sensor.grid_energy_import` / `sensor.grid_energy_export` → hosszú távú statisztikák (recorder)\n- `input_number.grid_import_meter` / `input_number.grid_export_meter` → utolsó ismert mérőállások\n\nHa átnevezted az entitásokat, frissítsd itt is:  \n- Home Assistant node-okban: `statistic_id` és `entityId` mezők  \n- A sablon szenzorokban: `device_class: energy`, `state_class: total_increasing`\n",
+        "height": 672,
+        "width": 448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        5424,
+        768
+      ],
+      "typeVersion": 1,
+      "id": "45099de8-1608-4fbf-a559-8a2c5269abe6",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "# Hibakeresés\n- Nincs adat az Extract után? → Ellenőrizd, hogy a tárgy `[EON-W1000]` és a csatolmány `.xlsx`.  \n- Rossz időbélyegek? → Időzóna és Excel konverzió ellenőrzése.  \n- HA nem mutat statisztikát? → Recorder engedélyezve, entitás `total_increasing`.  \n- 400/401 hiba HA node-ban? → Token újragenerálása, credential újrakapcsolása.  \n- Duplikált import? → Óránkénti csoportosítás miatt ugyanaz az óra/időbélyeg idempotens.\n",
+        "height": 272,
+        "width": 624,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2368,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "242399d5-a184-4b32-bf11-a4001bd3c280",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "# Biztonság és adatvédelem\n- Gmail/IMAP elérés csak olvasásra; nyers csatolmányt ne tárolj hosszú távon.  \n- Szűrés feladó (`noreply@eon.com`) + tárgy (`[EON-W1000]`) alapján.  \n- Tokeneket soha ne írd node paraméterbe – mindig az n8n Credentials-ben tárold.\n",
+        "height": 192,
+        "width": 624,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2368,
+        -304
+      ],
+      "typeVersion": 1,
+      "id": "abaa107e-6150-497d-809b-c6167ac2873b",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "# Home Assistant előfeltételek\n\nMielőtt futtatod a workflow-t, készítsd elő a HA-t:\n\n1. **Recorder engedélyezve**  \n   - A Recorder integráció aktív kell legyen (alapértelmezett az Energy dashboard esetén).\n\n2. **Spook integráció telepítve**  \n   - A `recorder.import_statistics` hívásokhoz szükséges.  \n   - Telepítsd HACS-ból: keresd a „Spook”-ot.\n     - A telepítési útmutatót [Itt találod](https://spook.boo)  \n   - Telepítés után indítsd újra a HA-t.\n\n3. **Segédek (input_number)**\nAdd hozzá ezeket a configuration.yaml fájlhoz (vagy a Felhasználói felületen a Segédek menüpontban):\n```yaml\ninput_number:\n  grid_import_meter:\n    name: grid_import_meter\n    mode: box\n    initial: 0\n    min: 0\n    max: 9999999999\n    step: 0.001\n    unit_of_measurement: kWh\n  grid_export_meter:\n    name: grid_export_meter\n    mode: box\n    initial: 0\n    min: 0\n    max: 9999999999\n    step: 0.001\n    unit_of_measurement: kWh\n```\n*  **Sablon szenzorok (sensor)**\nAdd hozzá ezeket a configuration.yaml fájlhoz (vagy a Felhasználói felületen a Segédek menüpontban):\n```yaml\ntemplate:\n  - sensor:\n      - name: \"grid_energy_import\"\n        state: \"{{ states('input_number.grid_import_meter') | float(0) }}\"\n        unit_of_measurement: \"kWh\"\n        device_class: energy\n        state_class: total_increasing\n      - name: \"grid_energy_export\"\n        state: \"{{ states('input_number.grid_export_meter') | float(0) }}\"\n        unit_of_measurement: \"kWh\"\n        device_class: energy\n        state_class: total_increasing\n```\n[![Segéd entitások](https://my.home-assistant.io/badges/helpers.svg)](https://my.home-assistant.io/redirect/helpers/)\n\n## Statisztikák használata HA-ban\nAz energia felület beállításaiban a `sensor.grid_energy_import` (Vételezés) és a `sensor.grid_energy_export` (visszatáplálás) entitásokat kell kiválasztani, hogy a felületen megjelentjenek a grafikonok\n[![Open your Home Assistant instance and show your energy dashboard configuration.](https://my.home-assistant.io/badges/config_energy.svg)](https://my.home-assistant.io/redirect/config_energy/)",
+        "height": 1216,
+        "width": 912,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1440,
+        -304
+      ],
+      "typeVersion": 1,
+      "id": "70e32e9d-4dfe-4c6a-b346-82a1eb768f37",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "id",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        1312
+      ],
+      "id": "291ee612-6daa-4f0c-bd31-280501c01308",
+      "name": "Split Out by id"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1776,
+        1312
+      ],
+      "id": "edf07a3e-234e-46cd-911c-f09acfcaca4b",
+      "name": "Loop Over Id"
+    },
+    {
+      "parameters": {
+        "operation": "rowNotExists",
+        "dataTableId": {
+          "__rl": true,
+          "value": "ffnQxZLrxH4enJwZ",
+          "mode": "list",
+          "cachedResultName": "EON W1000",
+          "cachedResultUrl": "/projects/0V3EqHuyCD5zs4zT/datatables/ffnQxZLrxH4enJwZ"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "start",
+              "keyValue": "={{ $json.start }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        4736,
+        1680
+      ],
+      "id": "a3ae0745-0c31-4985-87ba-470e1b5a4b24",
+      "name": "If row does not exist"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "ffnQxZLrxH4enJwZ",
+          "mode": "list",
+          "cachedResultName": "EON W1000",
+          "cachedResultUrl": "/projects/0V3EqHuyCD5zs4zT/datatables/ffnQxZLrxH4enJwZ"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "start": "={{ $json.start }}",
+            "AP": "={{ $json.AP }}",
+            "AM": "={{ $json.AM }}",
+            "import": "={{ $json['1_8_0'] }}",
+            "export": "={{ $json['2_8_0'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "start",
+              "displayName": "start",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "AP",
+              "displayName": "AP",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "AM",
+              "displayName": "AM",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "import",
+              "displayName": "import",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "export",
+              "displayName": "export",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        4960,
+        1680
+      ],
+      "id": "66a4f76a-cde9-42a8-9624-76a239cc7361",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "ffnQxZLrxH4enJwZ",
+          "mode": "list",
+          "cachedResultName": "EON W1000",
+          "cachedResultUrl": "/projects/0V3EqHuyCD5zs4zT/datatables/ffnQxZLrxH4enJwZ"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "start",
+              "keyValue": "={{ $json.start }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "AP": "={{ $json.AP }}",
+            "AM": "={{ $json.AM }}",
+            "import": "={{ $json['1_8_0'] }}",
+            "export": "={{ $json['2_8_0'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "start",
+              "displayName": "start",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "AP",
+              "displayName": "AP",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "AM",
+              "displayName": "AM",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "import",
+              "displayName": "import",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "export",
+              "displayName": "export",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        4960,
+        1520
+      ],
+      "id": "3bc861d1-b444-4055-924c-e6b478825ba3",
+      "name": "Update row(s)"
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        5840,
+        1376
+      ],
+      "id": "08767bc3-bed1-42d2-a383-e71d0b6af386",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "rowNotExists",
+        "dataTableId": {
+          "__rl": true,
+          "value": "ffnQxZLrxH4enJwZ",
+          "mode": "list",
+          "cachedResultName": "EON W1000",
+          "cachedResultUrl": "/projects/0V3EqHuyCD5zs4zT/datatables/ffnQxZLrxH4enJwZ"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "start",
+              "keyValue": "={{ $json.start }}"
+            },
+            {
+              "keyName": "AP",
+              "keyValue": "={{ $json.AP }}"
+            },
+            {
+              "keyName": "AM",
+              "keyValue": "={{ $json.AM }}"
+            },
+            {
+              "keyName": "import",
+              "keyValue": "={{ $json['1_8_0'] }}"
+            },
+            {
+              "keyName": "export",
+              "keyValue": "={{ $json['2_8_0'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        4736,
+        1520
+      ],
+      "id": "ca8047e9-3844-4952-a2c3-1f52eec3a88c",
+      "name": "If row data is bad"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        6064,
+        1664
+      ],
+      "id": "04615664-8e83-45c5-8d00-ec2355626737",
+      "name": "NoOp (go to next email Id"
+    },
+    {
+      "parameters": {
+        "jsCode": "function toNum(x, def = 0) {\n  if (x === undefined || x === null || x === '') return def;\n  const n = Number(x);\n  return isNaN(n) ? def : n;\n}\n\n// --- group by hour ---\nconst grouped = {};\nfor (const item of items) {\n  const j = item.json;\n  const hour = j.start;\n\n  if (!grouped[hour]) {\n    grouped[hour] = { start: hour, AP: 0, AM: 0, m180: null, m280: null };\n  }\n\n  grouped[hour].AP += toNum(j.AP);\n  grouped[hour].AM += toNum(j.AM);\n\n  if (j['1_8_0'] !== undefined) grouped[hour].m180 = toNum(j['1_8_0']);\n  if (j['2_8_0'] !== undefined) grouped[hour].m280 = toNum(j['2_8_0']);\n}\n\n// --- sort by time ---\nconst hours = Object.values(grouped).sort(\n  (a, b) => Date.parse(a.start) - Date.parse(b.start)\n);\n\n// --- forward pass ---\nlet last180 = null;\nlet last280 = null;\n\nfor (const h of hours) {\n  if (h.m180 !== null) last180 = h.m180;\n  if (h.m280 !== null) last280 = h.m280;\n\n  if (last180 === null) last180 = null;  // defer until back-calc\n  if (last280 === null) last280 = null;\n\n  h.start180 = last180;\n  h.start280 = last280;\n\n  if (last180 !== null) last180 += h.AP;\n  if (last280 !== null) last280 += h.AM;\n\n  h.end180 = last180;\n  h.end280 = last280;\n}\n\n\n// --- back calculation till first available 180 280 data ---\n\nconst firstMeterIndex = hours.findIndex(h => h.start180 !== null || h.start280 !== null);\n\nif (firstMeterIndex > 0) {\n\n  // Take the first available meter values (if missing, rebuild them)\n  let base180 = hours[firstMeterIndex].start180;\n  let base280 = hours[firstMeterIndex].start280;\n\n  // If one meter exists but the other doesn't, initialize cleanly.\n  if (base180 === null) base180 = 0;\n  if (base280 === null) base280 = 0;\n\n  // Backwards reconstruction\n  for (let i = firstMeterIndex - 1; i >= 0; i--) {\n    const h = hours[i];\n\n    base180 -= h.AP;\n    base280 -= h.AM;\n\n    h.start180 = base180;\n    h.start280 = base280;\n    h.end180 = base180 + h.AP;\n    h.end280 = base280 + h.AM;\n  }\n}\n\n\n// --- build output ---\n\nreturn hours.map(h => ({\n  json: {\n    start: h.start,\n    AP: h.AP.toFixed(3),\n    AM: h.AM.toFixed(3),\n    '1_8_0': h.start180.toFixed(3),\n    '2_8_0': h.start280.toFixed(3),\n  }\n}));"
+      },
+      "id": "0bb07ba4-bf43-4c01-b3ed-b4aa885054d4",
+      "name": "Calculate hourly sum",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        4368,
+        1184
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "content": "# Data table node-ok\nA node automatikusan menti az új adatokat és kijavítja azokat az adatokat amik hibásan lettek megadva",
+        "height": 352,
+        "width": 1312,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3968,
+        1472
+      ],
+      "typeVersion": 1,
+      "id": "f77ebe65-da30-49c4-81be-05bfd7d184f7",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 5,
+        "filters": {
+          "sender": "noreply@eon.com"
+        }
+      },
+      "id": "452594d6-3e4c-45c8-8628-a99e5600294a",
+      "name": "Get last 'n' messages",
+      "type": "n8n-nodes-base.gmail",
+      "position": [
+        720,
+        1328
+      ],
+      "webhookId": "b0b2b521-03ca-457b-94f1-c5fbfc00bdbf",
+      "typeVersion": 2.1,
+      "alwaysOutputData": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ctBdwDxIkxFWYxhN",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Üzenetek lekérése\n ha több email-t akarsz feldolgozni\n akkor írd át a limitet",
+        "width": 416,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        416,
+        1312
+      ],
+      "typeVersion": 1,
+      "id": "bce5c7b5-405f-40f8-8bd4-829feeaa0a69",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "ffnQxZLrxH4enJwZ",
+          "mode": "list",
+          "cachedResultName": "EON W1000",
+          "cachedResultUrl": "/projects/0V3EqHuyCD5zs4zT/datatables/ffnQxZLrxH4enJwZ"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        736,
+        2896
+      ],
+      "id": "691a0aed-57e9-4b5c-bdac-bd2194af0662",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "path": "5e6ac4f7-daf4-4bfe-88b3-5f764593d0e4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        448,
+        3008
+      ],
+      "id": "46976d85-a384-4dac-afbf-3a376746ca26",
+      "name": "Webhook",
+      "webhookId": "5e6ac4f7-daf4-4bfe-88b3-5f764593d0e4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        448,
+        2800
+      ],
+      "id": "ed6e52bd-0337-459a-9bc8-640f522fc8dd",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "min",
+              "field": "start"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1.1,
+      "position": [
+        1568,
+        2688
+      ],
+      "id": "2b4308ea-421d-4b3d-9901-ef38d0e09a50",
+      "name": "Summarize"
+    },
+    {
+      "parameters": {
+        "resource": "service",
+        "operation": "call",
+        "domain": "recorder",
+        "service": "purge_entities",
+        "serviceAttributes": {
+          "attributes": [
+            {
+              "name": "entity_id",
+              "value": "={{ ['sensor.grid_energy_export','sensor.grid_energy_import']}}"
+            },
+            {
+              "name": "keep_days",
+              "value": "={{ $now.diffTo($json.min_start, 'days').round() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.homeAssistant",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        2688
+      ],
+      "id": "e6d76b01-4cc4-4241-8c69-8139fa167fd4",
+      "name": "Call a service",
+      "credentials": {
+        "homeAssistantApi": {
+          "id": "5Q1lnmAQrn337KpP",
+          "name": "Home Assistant account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "start, import",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        2896
+      ],
+      "id": "e1393b93-d71a-4d1a-b3d1-8369dbdda79f",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "start, export",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1568,
+        3088
+      ],
+      "id": "fd4b6b99-700c-4dc4-ab88-7f8ff784db2b",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"start\": {{new Date($json.start)}},\n  \"state\": {{ $json.export }},\n  \"sum\": {{ $json.export}}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1792,
+        3088
+      ],
+      "id": "daca0d29-ec65-4c1e-9431-70c330f10758",
+      "name": "Generate 2_8_0 list for stats1"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"start\": {{new Date($json.start)}},\n  \"state\": {{ $json.import}},\n  \"sum\": {{ $json.import}}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1792,
+        2896
+      ],
+      "id": "f7d80557-d911-499d-972b-c30964a15a0c",
+      "name": "Generate 1_8_0 list for stats1"
+    },
+    {
+      "parameters": {
+        "resource": "state",
+        "operation": "upsert",
+        "entityId": "input_number.grid_import_meter",
+        "state": "={{ $('Generate 1_8_0 stats1').item.json.data.at(-1).state }}"
+      },
+      "type": "n8n-nodes-base.homeAssistant",
+      "typeVersion": 1,
+      "position": [
+        2464,
+        2896
+      ],
+      "id": "c1328af4-a904-4153-bb29-1c39f2f42c52",
+      "name": "Update input_number.import entity state",
+      "credentials": {
+        "homeAssistantApi": {
+          "id": "5Q1lnmAQrn337KpP",
+          "name": "Home Assistant account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "state",
+        "operation": "upsert",
+        "entityId": "input_number.grid_export_meter",
+        "state": "={{ $('Generate 2_8_0 stats1').item.json.data.at(-1).state }}"
+      },
+      "type": "n8n-nodes-base.homeAssistant",
+      "typeVersion": 1,
+      "position": [
+        2464,
+        3088
+      ],
+      "id": "3580955d-01f4-49ae-84e2-7da7cb8bd0f2",
+      "name": "Update input_number.exportt entity state",
+      "credentials": {
+        "homeAssistantApi": {
+          "id": "5Q1lnmAQrn337KpP",
+          "name": "Home Assistant account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "include": "specifiedFields",
+        "fieldsToInclude": "start,state, sum",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2016,
+        3088
+      ],
+      "id": "4d51cc46-4942-4e19-8ce5-d547a38183cb",
+      "name": "Generate 2_8_0 stats1"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "include": "specifiedFields",
+        "fieldsToInclude": "start,state, sum",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2016,
+        2896
+      ],
+      "id": "c482b13a-e022-4dc0-873a-adf20ab0dc11",
+      "name": "Generate 1_8_0 stats1"
+    },
+    {
+      "parameters": {
+        "resource": "service",
+        "operation": "call",
+        "domain": "recorder",
+        "service": "import_statistics",
+        "serviceAttributes": {
+          "attributes": [
+            {
+              "name": "statistic_id",
+              "value": "sensor.grid_energy_export"
+            },
+            {
+              "name": "source",
+              "value": "recorder"
+            },
+            {
+              "name": "unit_of_measurement",
+              "value": "kWh"
+            },
+            {
+              "name": "has_mean",
+              "value": "={{false}}"
+            },
+            {
+              "name": "has_sum",
+              "value": "={{ true }}"
+            },
+            {
+              "name": "stats",
+              "value": "={{ $json.data }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.homeAssistant",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        3088
+      ],
+      "id": "97aadd71-52e6-498f-b063-300665d577ef",
+      "name": "Spook: update -A hitorical data",
+      "credentials": {
+        "homeAssistantApi": {
+          "id": "5Q1lnmAQrn337KpP",
+          "name": "Home Assistant account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "service",
+        "operation": "call",
+        "domain": "recorder",
+        "service": "import_statistics",
+        "serviceAttributes": {
+          "attributes": [
+            {
+              "name": "statistic_id",
+              "value": "sensor.grid_energy_import"
+            },
+            {
+              "name": "source",
+              "value": "recorder"
+            },
+            {
+              "name": "unit_of_measurement",
+              "value": "kWh"
+            },
+            {
+              "name": "has_mean",
+              "value": "={{false}}"
+            },
+            {
+              "name": "has_sum",
+              "value": "={{ true }}"
+            },
+            {
+              "name": "stats",
+              "value": "={{ $json.data }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.homeAssistant",
+      "typeVersion": 1,
+      "position": [
+        2240,
+        2896
+      ],
+      "id": "99a95605-054b-401c-8878-c8fe414022aa",
+      "name": "Spook: update +A hitorical data2",
+      "credentials": {
+        "homeAssistantApi": {
+          "id": "5Q1lnmAQrn337KpP",
+          "name": "Home Assistant account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Adatok regenerálása\n - Az alábbi automatika lehetővé teszi, hogy visszatápláld a `recorder` be a később feldolgozott, illetve hibás adatokat (lásd: [discussions #10](https://github.com/Netesfiu/EON-W1000-n8n/discussions/10))\n## Mit csinál ez a rész?\n* Az adattábládban korábbi értékeket kiolvassa:\n* A homeassistant-ben a lekésőbbi időpontjáis törli a meglévő adatokat a recorderben\n* Visszatölti az adatokat az adattábla szerinti adatokkal\n\n## Használat homeassistant-ben\n`configuration.yaml` ben rögzítsd a következőt:\n\n```yaml\nrest_command:\n  regenerate_grid_energy_recorder:\n      url: “ide illeszd be a production webhook url-t”\n```\n\nminta szkript a használatára:\n```yaml\nalias: Grid_energy_sensor_database regeneration\nsequence:\n  - action: rest_command.regenerate_grid_energy_recorder\n    data: {}\n```",
+        "height": 1232,
+        "width": 2592
+      },
+      "id": "e7bce932-86f1-46a0-9995-96e72c1584f4",
+      "name": "Sticky Note16",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        384,
+        2080
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "# UPDATE V2\n\n## Az n8n-ben a 1.113.1 verziótól elérhetőek a `data tables` funkciók. ezzel a feldolgozott adatok közvetlenül menthetőek egy helyi táblázatba és később visszanyerhetőek/feldolgozhatóak (pl. homeassistant újratelepítés/adatvesztés esetén.)\n\n### Feltételek\n* hozz létre egy tetszöleges nevű adattáblát [itt](/home/datatables)\n* add hozzá a következő oszlopokat:\n  * start\n  * AP\n  * AM\n  * import\n  * export\n* Módosítsd *MINDEN* `data table` node-ban a kiválasztott táblázatot erre a táblára.\n",
+        "height": 576,
+        "width": 928,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2368,
+        192
+      ],
+      "typeVersion": 1,
+      "id": "3d969c2a-8073-4e9f-afe3-db886547cfb0",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        3072,
+        624
+      ],
+      "id": "0355255d-4c79-4d74-afed-36117341f0b8",
+      "name": "data table icon"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2768,
+        2864
+      ],
+      "id": "33274588-ba35-40bd-9bb4-b9bcbe670de0",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "batchSize": 100,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        944,
+        2896
+      ],
+      "id": "26c7eacf-cf4a-45eb-8cd8-5a4a6d254cb2",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        2720
+      ],
+      "id": "8dceb420-9696-4ac4-bed5-ce8832af4f30",
+      "name": "No Operation, do nothing"
+    }
+  ],
+  "connections": {
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Extract default data from source (+A)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extract '*_1' data from source (-A)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extract '*_2' data from source (1_8_0)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extract '*_3' data from source (2_8_0)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rename \"*_1\" keys for merge": {
+      "main": [
+        [
+          {
+            "node": "Merge (+A; -A)",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Get a message[0]": {
+      "main": [
+        [
+          {
+            "node": "If attachment_0 is xlsx",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rename \"*_1\" keys for merge1": {
+      "main": [
+        [
+          {
+            "node": "Merge (+A; -A)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rename \"*_1\" keys for merge2": {
+      "main": [
+        [
+          {
+            "node": "Merge (+A; -A)1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Extract default data from source (+A)": {
+      "main": [
+        [
+          {
+            "node": "Rename \"*_1\" keys for merge3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract '*_1' data from source (-A)": {
+      "main": [
+        [
+          {
+            "node": "Rename \"*_1\" keys for merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract '*_2' data from source (1_8_0)": {
+      "main": [
+        [
+          {
+            "node": "Rename \"*_1\" keys for merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract '*_3' data from source (2_8_0)": {
+      "main": [
+        [
+          {
+            "node": "Rename \"*_1\" keys for merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge (+A; -A)": {
+      "main": [
+        [
+          {
+            "node": "Merge (+A; -A)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rename \"*_1\" keys for merge3": {
+      "main": [
+        [
+          {
+            "node": "Merge (+A; -A)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge (+A; -A)1": {
+      "main": [
+        [
+          {
+            "node": "Merge (+A; -A)2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge (+A; -A)2": {
+      "main": [
+        [
+          {
+            "node": "Convert Excel time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Spook: update +A hitorical data1": {
+      "main": [
+        [
+          {
+            "node": "Update input_number.import entity state1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Spook: update -A hitorical data1": {
+      "main": [
+        [
+          {
+            "node": "Update input_number.exportt entity state1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate 1_8_0 list for stats": {
+      "main": [
+        [
+          {
+            "node": "Generate 1_8_0 stats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate 2_8_0 list for stats": {
+      "main": [
+        [
+          {
+            "node": "Generate 2_8_0 stats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate 1_8_0 stats": {
+      "main": [
+        [
+          {
+            "node": "Spook: update +A hitorical data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate 2_8_0 stats": {
+      "main": [
+        [
+          {
+            "node": "Spook: update -A hitorical data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update input_number.exportt entity state1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Update input_number.import entity state1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Check Email Subject",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get last 'n' messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If attachment_0 is xlsx": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Trigger (IMAP)": {
+      "main": [
+        [
+          {
+            "node": "If attachment_0 is xlsx",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Email Subject": {
+      "main": [
+        [
+          {
+            "node": "Split Out by id",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert datetime to Spook format": {
+      "main": [
+        [
+          {
+            "node": "Calculate hourly sum",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert Excel time": {
+      "main": [
+        [
+          {
+            "node": "Convert datetime to Spook format",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out by id": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Id": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get a message[0]",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If row does not exist": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Update row(s)": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "NoOp (go to next email Id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If row data is bad": {
+      "main": [
+        [
+          {
+            "node": "Update row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NoOp (go to next email Id": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate hourly sum": {
+      "main": [
+        [
+          {
+            "node": "Generate 1_8_0 list for stats",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Generate 2_8_0 list for stats",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If row data is bad",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If row does not exist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get last 'n' messages": {
+      "main": [
+        [
+          {
+            "node": "Check Email Subject",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize": {
+      "main": [
+        [
+          {
+            "node": "Call a service",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call a service": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Generate 1_8_0 list for stats1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Generate 2_8_0 list for stats1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate 2_8_0 list for stats1": {
+      "main": [
+        [
+          {
+            "node": "Generate 2_8_0 stats1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate 1_8_0 list for stats1": {
+      "main": [
+        [
+          {
+            "node": "Generate 1_8_0 stats1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update input_number.import entity state": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Update input_number.exportt entity state": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Generate 2_8_0 stats1": {
+      "main": [
+        [
+          {
+            "node": "Spook: update -A hitorical data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate 1_8_0 stats1": {
+      "main": [
+        [
+          {
+            "node": "Spook: update +A hitorical data2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Spook: update -A hitorical data": {
+      "main": [
+        [
+          {
+            "node": "Update input_number.exportt entity state",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Spook: update +A hitorical data2": {
+      "main": [
+        [
+          {
+            "node": "Update input_number.import entity state",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Summarize",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4a5b18b7956bb13cea42c4f3d7e9bb71b32449d237a47746edc89eb39825abfa"
+  }
+}
