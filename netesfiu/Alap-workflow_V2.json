@@ -17,6 +17,22 @@
     },
     {
       "parameters": {
+        "jsCode": "// ===========================================================================\n// One unique join key per Excel row.\n//\n// \"Extract from File\" is split into four branches and merged back together on\n// \"Idobelyeg\" (renamed to \"start\" later). When E.ON repeats a serial - which it\n// does for the ambiguous fall-back hour - every merge fans out, so a repeated\n// serial appears n^4 times and the hourly energy is multiplied. Appending the\n// occurrence index makes the key unique and keeps the merges 1:1.\n// ===========================================================================\nconst seen = new Map();\n\nreturn items.map((item) => {\n  const json = item.json;\n  const serial = Number(json['Időbélyeg']);\n\n  // Unknown format (not an Excel serial): leave the row untouched so the\n  // DST-safe conversion node can fail loudly instead of guessing.\n  if (!Number.isFinite(serial)) return { json };\n\n  const occurrence = seen.get(serial) || 0;\n  seen.set(serial, occurrence + 1);\n  return { json: { ...json, 'Időbélyeg': `${serial}#${occurrence}` } };\n});\n",
+        "mode": "runOnceForAllItems"
+      },
+      "id": "2319c45d-3345-440a-a752-5bce9b663564",
+      "name": "Slot key: Excel serial + occurrence",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2592,
+        1472
+      ],
+      "notes": "Makes the join key of the four Split Out branches unique per Excel row. E.ON repeats the serial of the ambiguous DST fall-back hour; without the occurrence suffix the merges fan out n^4 and multiply the hourly energy.",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
         "keys": {
           "key": [
             {
@@ -737,43 +753,19 @@
     },
     {
       "parameters": {
-        "operation": "formatDate",
-        "date": "={{ $json['start'] }}",
-        "format": "custom",
-        "customFormat": "yyyy-MM-dd HH:00:00ZZ",
-        "outputFieldName": "start",
-        "options": {
-          "includeInputFields": true
-        }
-      },
-      "id": "96dedf7a-91d8-4dbd-aebe-0ea36b548e99",
-      "name": "Convert datetime to Spook format",
-      "type": "n8n-nodes-base.dateTime",
-      "position": [
-        4000,
-        1184
-      ],
-      "typeVersion": 2
-    },
-    {
-      "parameters": {
-        "operation": "addToDate",
-        "magnitude": "1899-12-30",
-        "timeUnit": "=days",
-        "duration": "={{ $json['start'] + 0.00000001}}",
-        "outputFieldName": "start",
-        "options": {
-          "includeInputFields": true
-        }
+        "jsCode": "// ===========================================================================\n// E.ON W1000 - Excel serial -> Europe/Budapest hourly timestamp (DST-safe)\n//\n// The XLSX \"Idobelyeg\" column is a naive wall clock stored as an Excel serial\n// day fraction (1899-12-30 == 0). n8n's DateTime `addToDate` adds the integer\n// part as CALENDAR days and the fraction as ELAPSED time, so a file window that\n// spans a DST change is wrong from the transition until the next midnight: the\n// label 23:00 never exists, and at midnight the series jumps back. Any strict\n// hourly continuity check downstream then rejects the whole import.\n//\n// This node maps the serial to wall clock directly:\n//   serial -> wall clock -> real instant(s) in TZ -> \"yyyy-MM-dd HH:00:00+HH:MM\"\n// A wall clock that occurs twice (the fall-back hour) is resolved by\n// occurrence: #0 = first pass (DST offset), #1 = second pass (standard offset).\n// The occurrence suffix is written by the \"Slot key\" node upstream, which is\n// also what keeps the four merge branches 1:1.\n// ===========================================================================\n\nconst TZ = 'Europe/Budapest';\nconst HOUR = 3600000;\nconst EXCEL_EPOCH = Date.UTC(1899, 11, 30); // Excel serial 0 == 1899-12-30\nconst DAY = 86400000;\n\n// UTC offset of TZ at the given instant, in ms.\nfunction offsetAt(utcMs) {\n  const parts = new Intl.DateTimeFormat('en-US', {\n    timeZone: TZ,\n    timeZoneName: 'longOffset',\n  }).formatToParts(new Date(utcMs));\n  const name = parts.find((part) => part.type === 'timeZoneName').value; // \"GMT+02:00\" | \"GMT\"\n  const match = /GMT([+-])(\\d{2}):(\\d{2})/.exec(name);\n  if (!match) return 0;\n  const sign = match[1] === '-' ? -1 : 1;\n  return sign * (Number(match[2]) * 60 + Number(match[3])) * 60000;\n}\n\nfunction pad(value, width = 2) {\n  return String(value).padStart(width, '0');\n}\n\n// Every real instant that shows the given wall clock (none, one or two).\nfunction instantsForWallClock(wallMs) {\n  const candidates = new Set([\n    offsetAt(wallMs - 12 * HOUR),\n    offsetAt(wallMs),\n    offsetAt(wallMs + 12 * HOUR),\n  ]);\n  const found = [];\n  for (const offset of candidates) {\n    const instant = wallMs - offset;\n    if (instant + offsetAt(instant) === wallMs) found.push(instant);\n  }\n  return Array.from(new Set(found)).sort((a, b) => a - b);\n}\n\n// Wall clocks inside the spring-forward gap do not exist. E.ON still exports a\n// 24-hour-per-day grid, so those rows are shifted forward past the gap the same\n// way a JS Date does it (02:30 -> 03:30) instead of being dropped: the energy\n// stays in the series, folded into the following hour.\nfunction forwardPastGap(wallMs) {\n  return wallMs - offsetAt(wallMs - 6 * HOUR);\n}\n\nfunction resolveInstant(wallMs, occurrence) {\n  const instants = instantsForWallClock(wallMs);\n  if (instants.length) return instants[Math.min(occurrence, instants.length - 1)];\n  return forwardPastGap(wallMs);\n}\n\nfunction toHourLabel(instantMs) {\n  const offset = offsetAt(instantMs);\n  const wall = new Date(instantMs + offset);\n  const abs = Math.abs(offset);\n  const date = `${wall.getUTCFullYear()}-${pad(wall.getUTCMonth() + 1)}-${pad(wall.getUTCDate())}`;\n  const time = `${pad(wall.getUTCHours())}:00:00`;\n  const zone = `${offset < 0 ? '-' : '+'}${pad(Math.floor(abs / HOUR))}:${pad(Math.floor((abs % HOUR) / 60000))}`;\n  return `${date} ${time}${zone}`;\n}\n\nconst out = [];\nfor (const item of items) {\n  const json = item.json;\n  const raw = json.start;\n\n  // Either \"46320.083333333336#1\" (Slot key node) or a bare serial.\n  const parts = String(raw).split('#');\n  const serial = Number(parts[0]);\n  if (!Number.isFinite(serial)) {\n    throw new Error('Invalid Excel serial in start: ' + JSON.stringify(raw));\n  }\n  const occurrence = Number(parts[1]) || 0;\n\n  const wallHour = Math.floor((EXCEL_EPOCH + Math.round(serial * DAY)) / HOUR) * HOUR;\n  const instant = resolveInstant(wallHour, occurrence);\n\n  out.push({ json: { ...json, start: toHourLabel(instant) } });\n}\nreturn out;\n",
+        "mode": "runOnceForAllItems"
       },
       "id": "99763132-8a37-4a07-a11f-7154322ac3fb",
-      "name": "Convert Excel time",
-      "type": "n8n-nodes-base.dateTime",
+      "name": "Convert Excel time (DST-safe)",
+      "type": "n8n-nodes-base.code",
       "position": [
         3776,
         1184
       ],
-      "typeVersion": 2
+      "typeVersion": 2,
+      "notes": "Excel serial -> Europe/Budapest hourly timestamp without n8n addToDate's calendar/elapsed mix, which drops the 23:00 hour on a DST change and made the import fail the hourly-continuity check. Occurrence #1 of an ambiguous wall clock is mapped to the second (standard-time) pass.",
+      "notesInFlow": false
     },
     {
       "parameters": {
@@ -1678,6 +1670,17 @@
       "main": [
         [
           {
+            "node": "Slot key: Excel serial + occurrence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slot key: Excel serial + occurrence": {
+      "main": [
+        [
+          {
             "node": "Extract default data from source (+A)",
             "type": "main",
             "index": 0
@@ -1825,7 +1828,7 @@
       "main": [
         [
           {
-            "node": "Convert Excel time",
+            "node": "Convert Excel time (DST-safe)",
             "type": "main",
             "index": 0
           }
@@ -1983,28 +1986,6 @@
         [
           {
             "node": "No Operation, do nothing1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Convert datetime to Spook format": {
-      "main": [
-        [
-          {
-            "node": "Calculate hourly sum",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Convert Excel time": {
-      "main": [
-        [
-          {
-            "node": "Convert datetime to Spook format",
             "type": "main",
             "index": 0
           }
@@ -2341,6 +2322,17 @@
           },
           {
             "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert Excel time (DST-safe)": {
+      "main": [
+        [
+          {
+            "node": "Calculate hourly sum",
             "type": "main",
             "index": 0
           }

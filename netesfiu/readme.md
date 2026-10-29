@@ -82,6 +82,23 @@ Az energia felület beállításaiban a `sensor.grid_energy_import` (Vételezés
 
 [![Open your Home Assistant instance and show your energy dashboard configuration.](https://my.home-assistant.io/badges/config_energy.svg)](https://my.home-assistant.io/redirect/config_energy/)
 
+## Időzóna és óraátállítás
+
+Az XLSX `Időbélyeg` oszlopa egy *naiv* faliórát tartalmaz Excel sorszámként (1899-12-30 = 0). Korábban ezt a `Convert Excel time` node `addToDate` művelete alakította dátummá, ami az egész nap részt **naptári** napként, a törtrészt viszont **eltelt** időként adja hozzá. Egy óraátállítást tartalmazó exportnál ezért a váltás után a címkék egy órával elcsúsznak, éjfélkor pedig visszaugranak: a `23:00` óra egyáltalán nem jön létre. A szigorú órás folytonosságot ellenőrző feldolgozás ezt jogosan elutasítja, tehát a teljes import megáll.
+
+Két node foglalkozik ezzel (mindkettő `Code` node):
+
+* **`Slot key: Excel serial + occurrence`** – minden Excel sor kap egy egyedi kulcsot (`<serial>#<előfordulás>`). Az E.ON az őszi óraátállításnál az ambigens óra sorait **ugyanazzal a sorszámmal** küldi el kétszer; enélkül a négy `Split Out` ág összefűzése felhasználónként négyszeresére dagadna (`n^4`), és az órás energia többszöröződne.
+* **`Convert Excel time (DST-safe)`** – a sorszámot közvetlenül faliórára képezi, majd az `Europe/Budapest` zóna valós időpontjaira. Az ambigens óra `#0` előfordulása a nyári (első), a `#1` a téli (második) átfutás. Így az őszi óraátállítás napja 25 órás lesz, az órák folytonosak, az energia pedig nem duplikálódik és nem vész el. A tavaszi váltásnál nem létező faliórákat (02:00–02:59) a rendszer a következő órába tolja előre, nem dobja el.
+
+A node-kód óránkénti bontását a `tests/dst-hour-buckets.test.js` ellenőrzi a workflow JSON-ból kiolvasott kódon (őszi, tavaszi és óraátállítás nélküli hét, valamint a `#` kulcs JSON-oda-vissza útja):
+
+```bash
+node --test tests/*.test.js
+```
+
+> **Frissítéskor**: ha korábbi verzióval már importáltál óraátállítást tartalmazó hetet, az érintett órák hibás címkével (1 órával korábban) és egy duplázott órával kerültek a statisztikába. Az adott időszak sorait törölni kell a Data Table-ből / az `import_statistics` szolgáltatással felül kell írni, majd újra lefuttatni az érintett e-mail feldolgozását.
+
 ## n8n import és hitelesítések
 
 1. **Workflow importálása**
