@@ -17,6 +17,10 @@ Ez a sablon egy workflow-ban kezeli a teljes folyamatot.
 Három külön workflow, hogy az Excel feldolgozás szükség szerint cserélhető legyen.
 
 ## Egyéb megoldások
+
+### [TypeScript importáló Cloudflare R2-höz](typescript-r2/)
+
+A Cloudflare R2-ben tárolt nyers e-mailekből olvassa a W1000 jelentéseit, és a Home Assistant Recorderbe importálja az órás adatokat. Dockerből és cronból is futtatható.
 ### [\[prixeus\] Golang (docker-scratch)](/prixeus/README.md)
 
 ## Közreműködés
