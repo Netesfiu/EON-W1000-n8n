@@ -1,0 +1,12 @@
+services:
+  eon-importer:
+    build: .
+    init: true
+    read_only: true
+    env_file: .env
+    environment:
+      STATE_DIR: /state
+    volumes:
+      - importer-state:/state
+volumes:
+  importer-state:
